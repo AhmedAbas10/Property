@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_property_property,property.property,property.model_property_property,,1,1,1,1
+access_owner,owner.owner,property.model_owner,base.group_user,1,1,1,1
+access_tag,tag.tag,property.model_tag,base.group_user,1,1,1,1
+access_property.line,property.line,property.model_property_line,base.group_user,1,1,1,1
+access_building,building,property.model_building,base.group_user,1,1,1,1
+access_property.history,property.history,property.model_property_history,base.group_user,1,1,1,1
+access_change.state,change.state,property.model_change_state,base.group_user,1,1,1,1

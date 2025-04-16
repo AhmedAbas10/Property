@@ -1,0 +1,154 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="property_list_view">
+            <field name="name">property list</field>
+            <field name="model">property.property</field>
+            <field name="arch" type="xml">
+                <tree class="custom_header" decoration-danger="(is_late)">
+                    <field name="name"/>
+                    <field name="date_availability"/>
+                    <field name="is_late" invisible="1"/>
+                    <field name="selling_price"/>
+                    <field name="garden"/>
+                    <field name="state"/>
+                    <field name="bedrooms" optional="hide"/>
+                    <field name="facades" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="property_form_view">
+            <field name="name">property Form</field>
+            <field name="model">property.property</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_draft" string="Set to Draft" type="object" class="btn-primary"
+                                invisible="state in (' draft', 'closed')"/>
+                        <button name="get_properties" string="Test Property GET Method" type="object" class="btn-primary"/>
+                        <button name="action_pending" string="Pending" type="object" class="btn-secondary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_sold" string="Sold" type="object" class="btn-lg btn-success"
+                                invisible="state != 'pending'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="action_open_related_partner" type="object" icon="fa-user" string="Owner"
+                                    invisible="not owner_id"/>
+                        </div>
+                        <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                        <widget name="web_ribbon" title="SOLD" bg_color="text-bg-success" invisible="state != 'sold'"/>
+                        <widget name="web_ribbon" title="CLOSED" bg_color="text-bg-danger" invisible="state != 'closed'"/>
+                        <div class="oe_title">
+                            <h1>
+                                <label for="ref"/>
+                                <field name="ref" readonly="1"/>
+                            </h1>
+                           <h3>
+                               <label for="name"/>
+                               <field name="name" readonly="state == 'closed'"/>
+                           </h3>
+
+                        </div>
+                        <group>
+                            <group string="General Info.">
+                                <field name="date_availability"/>
+                                <field name="expected_selling_date"/>
+                                <field name="is_late" invisible="1"/>
+                                <field name="postcode"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                                <field name="diff" string="Difference"/>
+<!--                                <field name="bedrooms"/>-->
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                            </group>
+                            <group string="Additional Info.">
+                                <field name="garden_area"/>
+                                <field name="bedrooms"/>
+                                <field name="garden"/>
+                                <field name="garage"/>
+                                <field name="active"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="owner_id"/>
+                                <field name="owner_phone"/>
+                                <field name="owner_address"/>
+                                <field name="tags_ids"/>
+                            </group>
+                            <group string="Description">
+                                <field name="description"/>
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page name="bedrooms" string="Bedrooms">
+                                <field name="line_ids">
+                                    <tree editable="bottom" class="line_header">
+                                        <field name="description"/>
+                                        <field name="area"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="property_search_view">
+            <field name="name">property Search</field>
+            <field name="model">property.property</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="postcode"/>
+                    <filter name="is_garden" string="With Garden" domain="[('garden','=',True)]"/>
+                    <filter name="is_not_garden" string="Without Garden" domain="[('garden','=',False)]"/>
+                    <filter name="is_garage" string="With garage" domain="[('garage','=',True)]"/>
+                    <filter name="group_garden" string="Garden" context="{'group_by':'garden'}"/>
+                </search>
+            </field>
+        </record>
+        <record id="property_action_server" model="ir.actions.server">
+            <field name="name">Close Session</field>
+            <field name="model_id" ref="model_property_property"/>
+            <field name="binding_model_id" ref="model_property_property"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_closed()
+            </field>
+        </record>
+         <record id="open_change_wizard_action_server" model="ir.actions.server">
+            <field name="name">Open Change State Wizard</field>
+            <field name="model_id" ref="model_property_property"/>
+            <field name="binding_model_id" ref="model_property_property"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.open_change_wizard_action()
+            </field>
+        </record>
+        <record id="property_automation_action" model="ir.cron">
+            <field name="name">Property: Check Expected Selling Date</field>
+            <field name="model_id" ref="model_property_property"/>
+            <field name="state">code</field>
+            <field name="code">model.check_expected_selling_date()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+        </record>
+        <record model="ir.actions.act_window" id="property_action">
+            <field name="name">Property</field>
+            <field name="res_model">property.property</field>
+        </record>
+        <menuitem id="property_menu_item"
+                  name="property"
+                  parent="property.properties_menu"
+                  action="property_action"/>
+    </data>
+</odoo>

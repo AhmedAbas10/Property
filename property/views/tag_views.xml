@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="tag_list_view">
+            <field name="name">tag list</field>
+            <field name="model">owner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="tag_form_view">
+            <field name="name">tag Form</field>
+            <field name="model">tag</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <field name="name"/>
+                        </div>
+
+
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="tag_search_view">
+            <field name="name">tag Search</field>
+            <field name="model">tag</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="tag_action">
+            <field name="name">tag</field>
+            <field name="res_model">tag</field>
+        </record>
+        <menuitem id="tag_menu_item"
+                  name="Tags"
+                  parent="property.configuration_menu"
+                  action="tag_action"/>
+    </data>
+</odoo>

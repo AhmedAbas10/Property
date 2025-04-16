@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <menuitem
+                id="real_state_menu_root"
+                name="Real Estate" web_icon="property,static/description/icon.png"/>
+        <menuitem id="properties_menu"
+                  name="Properties"
+                  parent="real_state_menu_root"/>
+        <menuitem id="configuration_menu"
+                  name="Configuration"
+                  parent="real_state_menu_root"
+                  groups="property.property_group"/>
+    </data>
+</odoo>

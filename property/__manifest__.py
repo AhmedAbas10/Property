@@ -8,7 +8,7 @@
 Long description of module's purpose
     """,
 
-    'author': "Usama Fathi",
+    'author': "Ahmed Abas",
     'website': "https://www.linkedin.com/in/usama-fathi-4bb282239/",
     'category': 'Hotel Management',
     'version': '17.0.0.1',
